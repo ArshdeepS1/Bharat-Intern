@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <style>
+            body{
+                margin: 0%;
+                padding: 0%;
+            }
+            .back{
+                background-image: url("w.jpg");
+                background-size: cover;
+                width: 100%;
+                height: 100%;
+                position: relative;
+            }
+            .inner{
+                height: 700px;
+                width: 900px;
+                background-color: rgba(0,0,0,0.4);
+                border-radius: 50px;
+                margin-left: 29%;
+                margin-top: 4%;
+            }
+            .inp{
+                margin-top: 4%;
+                margin-left: 2%;
+                font-size: 25px;
+            }
+            .s{
+                margin-top: 4%;
+                margin-left: 0.5%;
+                font-size: 25px;
+            }
+            .dat{
+                position: absolute;
+                margin-top: 0.3%;
+                margin-left: 2%;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="back">
+            <div class="dat"><h1>27 Feb 2024</h1></div>
+            <input type="text" placeholder="search city" class="inp" id="i">
+            <button class="s">search</button>
+            <div class="inner">
+                <h1 style="color: white;margin-left: 6%;font-size: 40px;margin-top: 2%; position: absolute;" class="temp">21<sup>o</sup></h1>
+                <h1 style="color: white;margin-left: 6%;font-size: 40px;margin-top: 4%; position: absolute;" class="city"><br>London</h1>
+                <img src="wind.png" style="height: 100px;width: 150px; margin-top: 22%;position: absolute;margin-left: 6%;">
+                <img src="humidity.png" style="height: 100px;width: 110px; margin-top: 9%;position: absolute;margin-left: 6%;">
+                <h1 style="color: white;margin-left: 6%;font-size: 40px;margin-top: 15%; position: absolute;"class="humid">40%</h1>
+                <h1 style="color: white;margin-left: 6%;font-size: 40px;margin-top: 15%; position: absolute;"><br>Humidity</h1>
+                <h1 style="color: white;margin-left: 6%;font-size: 40px;margin-top: 28%; position: absolute;" class="wind">10 km/hr</h1>
+                <h1 style="color: white;margin-left: 6%;font-size: 40px;margin-top: 28%; position: absolute;"><br>Wind</h1>
+                <img src="sun2.png" style="height: 250px; float: right; margin-top: 8%;margin-right: 14%;"class="ia">
+            </div>
+        </div>
+    <script>
+        const apikey="661cee6ba5ecd246ef5920ea6eb77232"
+        const apiurl="https://api.openweathermap.org/data/2.5/weather?&units=metric"   
+        
+        async function checkWheather()
+        {
+            let but=document.querySelector(".s")
+            but.addEventListener('click',async()=>{
+            const name=document.getElementById("i").value
+            const response=await fetch(apiurl + `&appid=${apikey}`+ `&q=${name}`)
+            let data=await response.json();
+            console.log(data);
+            document.querySelector(".temp").innerHTML=data.main.temp+"°C"
+            document.querySelector(".city").innerHTML=data.name
+            document.querySelector(".humid").innerHTML=data.main.humidity+"%"
+            document.querySelector(".wind").innerHTML=data.wind.speed   
+            if(data.weather[0].main=="Clouds"||data.weather[0].main=="Smoke"){
+                document.querySelector('.ia').src='clouds.png'
+            }
+            else if(data.weather[0].main=="Clear"){
+                document.querySelector('.ia').src='sun2.png'
+            }
+            else if(data.weather[0].main=="Haze"||data.weather[0].main=="Fog"){
+                document.querySelector('.ia').src='fog.png'
+            }
+            else if(data.weather[0].main=="Rain"){
+                document.querySelector('.ia').src='raining.png'
+            }
+        })
+        }   
+        checkWheather()
+    </script>
+    </body>
+</html>
